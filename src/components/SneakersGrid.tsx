@@ -28,7 +28,6 @@ export default function SneakersGrid({ sneakers }: SneakersGridProps) {
         <div
           key={sneaker.styleID}
           style={{
-           
             padding: "18px 12px 14px 12px",
             display: "flex",
             flexDirection: "column",
