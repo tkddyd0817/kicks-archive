@@ -1,6 +1,6 @@
 // /pages/api/sneakers.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import Sneaks from 'sneaks-api';
+import type { NextApiRequest, NextApiResponse } from "next";
+import Sneaks from "sneaks-api";
 
 interface Sneaker {
   styleID: string;
@@ -16,64 +16,50 @@ const sneaks = new Sneaks();
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Sneaker[] | { error: string }>
+  res: NextApiResponse<
+    { releases: Sneaker[]; upcoming: Sneaker[] } | { error: string }
+  >
 ) {
-  sneaks.getProducts("Jordan 1", 20, (err: unknown, products: Sneaker[]) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: '신발 정보를 불러오지 못했습니다.' });
-      return;
+  // 쿼리스트링에서 키워드 추출 (기본값: "Jordan 1")
+  const { keyword = "Jordan 1" } = req.query;
+
+  sneaks.getProducts(
+    keyword as string,
+    100,
+    (err: unknown, products: Sneaker[]) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "신발 정보를 불러오지 못했습니다." });
+        return;
+      }
+
+      const today = new Date();
+
+      // 발매일 기준 분류
+      const releases: Sneaker[] = [];
+      const upcoming: Sneaker[] = [];
+
+      products.forEach((sneaker) => {
+        if (!sneaker.releaseDate) {
+          releases.push(sneaker);
+          return;
+        }
+        const releaseDate = new Date(sneaker.releaseDate);
+        if (isNaN(releaseDate.getTime())) {
+          releases.push(sneaker);
+          return;
+        }
+        if (releaseDate > today) {
+          upcoming.push(sneaker);
+        } else {
+          releases.push(sneaker);
+        }
+      });
+
+      res.status(200).json({
+        releases,
+        upcoming,
+      });
     }
-    res.status(200).json(products);
-  });
+  );
 }
-
-
-// // /pages/api/sneakers.ts
-// import type { NextApiRequest, NextApiResponse } from 'next';
-
-// // 신발 정보 타입 정의 (예시)
-// interface Sneaker {
-//   id: string;
-//   name: string;
-//   brand: string;
-//   releaseDate: string;
-//   image: string;
-//   price: string;
-//   [key: string]: unknown; // 기타 필드
-// }
-
-// interface SneakersApiResponse {
-//   releases: Sneaker[];
-//   upcoming: Sneaker[];
-//   restocks: Sneaker[];
-// }
-
-// export default async function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponse<SneakersApiResponse | { error: string }>
-// ) {
-//   try {
-//     // 1. 최신 발매/과거 발매/예정 신발 정보
-//     const releasesRes = await fetch('https://www.thesolerestocks.com/api/releases');
-//     const releases = await releasesRes.json();
-
-//     // 2. 발매 예정 신발 정보
-//     const upcomingRes = await fetch('https://www.thesolerestocks.com/api/upcoming');
-//     const upcoming = await upcomingRes.json();
-
-//     // 3. 리스탁(재입고) 정보
-//     const restocksRes = await fetch('https://www.thesolerestocks.com/api/restocks');
-//     const restocks = await restocksRes.json();
-
-//     res.status(200).json({
-//       releases,
-//       upcoming,
-//       restocks,
-//     });
-//   } catch (error: unknown) {
-//     console.error(error);
-//     res.status(500).json({ error: '신발 정보를 불러오지 못했습니다.' });
-//   }
-// }
-

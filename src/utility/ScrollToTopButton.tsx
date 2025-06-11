@@ -54,18 +54,7 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
                    opacity-80 hover:opacity-100 z-50" // 여기에 rounded-full 추가!
         >
               <img src="/icons8-air-jordan.svg" alt="맨 위로" className="w-6 h-6" />
-          {/* ↑ */}
         </button>
-        // <button 
-        //   onClick={scrollToTop}
-        //   aria-label="맨 위로 스크롤"
-        //   className="fixed bottom-5 right-5 p-2.5 text-lg bg-red-500 text-black 
-        //            border-none rounded cursor-pointer transition-opacity duration-300 
-        //            opacity-80 hover:opacity-100 z-50"
-        // >
-        //       <img src="/icons8-air-jordan.svg" alt="맨 위로" className="w-6 h-6" />
-        //   {/* ↑ */}
-        // </button>
       )}
     </>
   );
