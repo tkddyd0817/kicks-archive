@@ -1,7 +1,6 @@
 "use client";
 
-
-import SneakersPage from "@/components/SneakersPage";
+import SneakersPage from "@/app/sneakers/components/SneakersPage";
 import React from "react";
 
 function page() {

@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Sneaker {
@@ -15,6 +18,7 @@ interface SneakersGridProps {
 }
 
 export default function SneakersGrid({ sneakers }: SneakersGridProps) {
+ const router = useRouter();
   return (
     <div
       style={{
@@ -35,6 +39,7 @@ export default function SneakersGrid({ sneakers }: SneakersGridProps) {
             minHeight: "260px",
             height: "100%",
           }}
+          onClick={() => router.push(`/sneakers/${sneaker.styleID}`)}
         >
           <img
             src={sneaker.thumbnail as string}

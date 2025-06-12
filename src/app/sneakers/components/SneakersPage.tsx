@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import SneakersHeader from "@/components/SneakersHeader";
-import SneakersGridSkeleton from "@/components/SneakersGridSkeleton";
-import SneakersGrid from "@/components/SneakersGrid";
-
+import SneakersHeader from "@/app/sneakers/components/SneakersHeader";
+import SneakersGridSkeleton from "@/app/sneakers/components/SneakersGridSkeleton";
+import SneakersGrid from "@/app/sneakers/components/SneakersGrid";
 
 interface Sneaker {
   styleID: string;
@@ -48,16 +47,18 @@ export default function SneakersPage() {
       {isError && <div>에러가 발생했습니다.</div>}
       {data && (
         <>
-        <h2>발매 예정 신발</h2>
-{isLoading ? (
-  <SneakersGridSkeleton />
-) : data.upcoming.length === 0 ? (
-  <div style={{ textAlign: "center", color: "#888", padding: "40px 0" }}>
-    발매 예정 신발이 없습니다.
-  </div>
-) : (
-  <SneakersGrid sneakers={data.upcoming} />
-)}
+          <h2>발매 예정 신발</h2>
+          {isLoading ? (
+            <SneakersGridSkeleton />
+          ) : data.upcoming.length === 0 ? (
+            <div
+              style={{ textAlign: "center", color: "#888", padding: "40px 0" }}
+            >
+              발매 예정 신발이 없습니다.
+            </div>
+          ) : (
+            <SneakersGrid sneakers={data.upcoming} />
+          )}
           <h2>이미 발매된 신발</h2>
           {data.releases.length === 0 ? (
             <SneakersGridSkeleton />
