@@ -19,9 +19,6 @@ export default function SneakerDetailSkeleton() {
           alignItems: "center",
           minHeight: "260px",
           height: "100%",
-          background: "#fff",
-          borderRadius: "16px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
           animation: "skeleton-blink 1.2s infinite ease-in-out alternate",
         }}
       >
